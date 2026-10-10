@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Araksha-Med — Team Kernel Panics Pitch Deck</title>
+    <meta name="description" content="Araksha-Med Pitch Deck: Privacy-First On-Device Medical Prescription & Drug Interaction Inspector using Google Gemma and Deterministic Verification.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Tailwind CDN with custom configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.7); }
+
+        /* Animation utilities */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(1.05); }
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .animate-glow-slow { animation: pulseGlow 6s ease-in-out infinite; }
+        .float-card { animation: floatSlow 6s ease-in-out infinite; }
+
+        /* Laser pointer styling */
+        #laser-pointer {
+            pointer-events: none;
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 12px 4px rgba(239, 68, 68, 0.85), 0 0 24px 8px rgba(239, 68, 68, 0.4);
+            transform: translate(-50%, -50%);
+            z-index: 99999;
+            display: none;
+            transition: opacity 0.15s ease;
+        }
+
+        /* Slide Transitions */
+        .slide-container {
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .slide-container.slide-hidden-prev {
+            opacity: 0;
+            transform: translateX(-35px) scale(0.98);
+            pointer-events: none;
+            position: absolute;
+        }
+        .slide-container.slide-hidden-next {
+            opacity: 0;
+            transform: translateX(35px) scale(0.98);
+            pointer-events: none;
+            position: absolute;
+        }
+        .slide-container.slide-active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            position: relative;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+            .slide-container {
+                page-break-after: always;
+                opacity: 1 !important;
+                transform: none !important;
+                position: relative !important;
+                display: block !important;
+                margin-bottom: 2rem !important;
+            }
+            body { background: white !important; color: black !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col selection:bg-blue-600 selection:text-white transition-colors duration-300 overflow-x-hidden">
+
+    <!-- Laser pointer element -->
+    <div id="laser-pointer"></div>
+
+    <!-- BACKGROUND AMBIENT GLOW -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 rounded-full blur-3xl animate-glow-slow"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 bg-cyan-400/10 dark:bg-cyan-500/10 rounded-full blur-3xl animate-glow-slow" style="animation-delay: -3s;"></div>
+        <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-indigo-400/10 dark:bg-indigo-600/10 rounded-full blur-3xl animate-glow-slow" style="animation-delay: -1.5s;"></div>
+        <!-- Grid pattern overlay -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#cbd5e11f_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e11f_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1e293b0f_1px,transparent_1px),linear-gradient(to_bottom,#1e293b0f_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+    </div>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="no-print sticky top-0 z-40 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 px-4 md:px-8 py-3 flex items-center justify-between transition-colors duration-300" id="main-header">
+        <div class="flex items-center gap-3">
+            <div class="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white font-bold shadow-md shadow-blue-500/20">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="font-extrabold tracking-tight text-base bg-gradient-to-r from-slate-900 via-slate-800 to-blue-600 dark:from-white dark:via-slate-100 dark:to-blue-400 bg-clip-text text-transparent">Araksha-Med</span>
+                    <span class="hidden sm:inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30">Edge AI</span>
+                </div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Team Kernel Panics • Pitch Deck</p>
+            </div>
+        </div>
+
+        <!-- PROGRESS BAR (DESKTOP) -->
+        <div class="hidden md:flex flex-col items-center flex-1 max-w-xs mx-8">
+            <div class="flex items-center justify-between w-full text-[11px] font-mono text-slate-500 dark:text-slate-400 mb-1">
+                <span>PROGRESS</span>
+                <span id="header-progress-text" class="text-blue-600 dark:text-blue-400 font-semibold">1 of 6 (16%)</span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300" style="width: 16.66%;"></div>
+            </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex items-center gap-1.5 md:gap-2">
+            <!-- Mode toggle: Presentation vs Scroll -->
+            <button id="view-mode-btn" title="Toggle Slide / Scroll View (V)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-700 text-xs flex items-center gap-1.5 font-medium">
+                <svg id="view-mode-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <span class="hidden lg:inline" id="view-mode-label">Slide Mode</span>
+            </button>
+
+            <!-- Slide Overview Grid button -->
+            <button id="grid-toggle-btn" title="Slide Overview Grid (O)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-700 text-xs flex items-center gap-1 font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+                <span class="hidden lg:inline">Grid (O)</span>
+            </button>
+
+            <!-- Speaker Notes Drawer button -->
+            <button id="notes-toggle-btn" title="Toggle Speaker Notes (N)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-700 text-xs flex items-center gap-1 font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span class="hidden lg:inline">Notes (N)</span>
+            </button>
+
+            <!-- Laser Pointer button -->
+            <button id="laser-toggle-btn" title="Toggle Laser Pointer (L)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-700 text-xs flex items-center gap-1 font-medium">
+                <span class="w-3 h-3 rounded-full bg-red-500 inline-block shadow-sm shadow-red-500"></span>
+                <span class="hidden lg:inline">Laser (L)</span>
+            </button>
+
+            <!-- Theme toggle button -->
+            <button id="theme-toggle-btn" title="Toggle Theme (T)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-700 text-xs">
+                <!-- Sun icon (shown in light mode, clicking switches to dark) -->
+                <svg id="theme-icon-light" class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <!-- Moon icon (shown in dark mode) -->
+                <svg id="theme-icon-dark" class="w-4 h-4 hidden text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+
+            <!-- Fullscreen button -->
+            <button id="fullscreen-btn" title="Fullscreen (F)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-700 text-xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+            </button>
+
+            <!-- Shortcuts Guide button -->
+            <button id="help-btn" title="Keyboard Shortcuts (?)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-700 text-xs">
+                <span class="font-mono text-xs font-bold px-1">?</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN PRESENTATION CANVAS -->
+    <main class="flex-1 flex flex-col justify-center items-center p-4 sm:p-6 md:p-8 max-w-6xl mx-auto w-full relative z-10" id="deck-wrapper">
+
+        <!-- ==================== SLIDE 1: TITLE ==================== -->
+        <section id="slide-1" class="slide-container slide-active w-full" data-slide="1" data-title="Title & Mission">
+            <div class="relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-8 md:p-14 shadow-xl shadow-blue-500/5 dark:shadow-blue-500/10 overflow-hidden backdrop-blur-xl transition-all">
+                <!-- Background ambient lights -->
+                <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-blue-500/10 dark:bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute top-0 right-1/4 w-60 h-60 bg-cyan-400/10 dark:bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="space-y-6 relative z-10">
+                    <!-- Top badges -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 text-xs font-semibold tracking-wider uppercase">
+                            <span class="text-sm">🏆</span> <span>Team Kernel Panics</span> • <span>Hacktoberfest Hack Day</span>
+                        </div>
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono font-medium">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-ping"></span>
+                            <span>ON-DEVICE NPU READY</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Title -->
+                    <div class="space-y-3">
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-blue-600 dark:from-white dark:via-slate-100 dark:to-blue-400 bg-clip-text text-transparent">
+                            Araksha-Med
+                        </h1>
+                        <p class="text-xl sm:text-2xl text-blue-600 dark:text-blue-400 font-semibold tracking-tight">
+                            On-Device Medical Prescription & Drug Interaction Inspector
+                        </p>
+                    </div>
+
+                    <!-- Description -->
+                    <p class="text-slate-600 dark:text-slate-300 max-w-3xl text-base sm:text-lg leading-relaxed">
+                        A clinical-grade, privacy-first edge AI system combining Google Gemma multimodal visual extraction with a deterministic SQLite contraindication engine — guaranteeing zero cloud data leaks and 100% verifiable clinical safety.
+                    </p>
+
+                    <!-- Feature Pills / Highlights -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                        <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/90 dark:border-slate-700/60 p-4 rounded-2xl flex items-center gap-3.5 shadow-sm hover:border-blue-300 transition-colors">
+                            <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg">🔒</div>
+                            <div>
+                                <div class="text-sm font-bold text-slate-900 dark:text-white">Zero Cloud Exposure</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">100% on-device PII masking</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/90 dark:border-slate-700/60 p-4 rounded-2xl flex items-center gap-3.5 shadow-sm hover:border-cyan-300 transition-colors">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-lg">⚡</div>
+                            <div>
+                                <div class="text-sm font-bold text-slate-900 dark:text-white">&lt;150ms Edge Latency</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Optimized local quantized Gemma</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/90 dark:border-slate-700/60 p-4 rounded-2xl flex items-center gap-3.5 shadow-sm hover:border-emerald-300 transition-colors">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-lg">🛡️</div>
+                            <div>
+                                <div class="text-sm font-bold text-slate-900 dark:text-white">Zero Hallucinations</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Deterministic DrugBank rules</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Track Badges & Repo Info -->
+                    <div class="pt-4 flex flex-wrap items-center justify-between gap-4 text-xs font-mono border-t border-slate-200/80 dark:border-slate-800/80">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-400 font-semibold">✨ Google Gemma Track</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-cyan-700 dark:text-cyan-400 font-semibold">🌊 DigitalOcean Open-Source Track</span>
+                        </div>
+                        <div class="text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                            <span>Press</span> <kbd class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold text-slate-800 dark:text-white">Space</kbd> <span>or</span> <kbd class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold text-slate-800 dark:text-white">→</kbd> <span>to begin</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 2: THE PROBLEM ==================== -->
+        <section id="slide-2" class="slide-container slide-hidden-next w-full" data-slide="2" data-title="The Problem">
+            <div class="relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-8 md:p-14 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 backdrop-blur-xl space-y-6">
+                <!-- Header -->
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="inline-block px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-semibold uppercase tracking-wider">
+                        The Critical Challenge
+                    </div>
+                    <span class="text-xs font-mono text-slate-500 dark:text-slate-400">1.3M+ annual preventable drug injury events globally</span>
+                </div>
+
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Why Current Medical AI Systems Fall Short</h2>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">Generic cloud LLMs fail safety audits and regulatory compliance in healthcare.</p>
+                </div>
+
+                <!-- 3 Pillars Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                    <!-- Pillar 1 -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 p-6 rounded-2xl space-y-4 transition-all duration-200 group hover:border-rose-300 dark:hover:border-rose-500/40 hover:-translate-y-1 shadow-sm">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            ✍️
+                        </div>
+                        <div>
+                            <span class="text-[11px] font-mono text-rose-600 dark:text-rose-400 font-semibold tracking-wider uppercase">01 / Legibility Deficit</span>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mt-1">Ambiguous Handwriting</h3>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Cursive doctor prescriptions routinely lead to critical dosage misinterpretations. Standard OCR either hallucinates or silently ignores unclear dosage units.
+                        </p>
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/50 text-[11px] font-mono text-slate-600 dark:text-slate-400">
+                            ⚠️ Example: <span class="text-rose-600 dark:text-rose-300 font-semibold">"Warfarin 2.5mg"</span> read as <span class="text-rose-600 dark:text-rose-300 font-semibold">"Warfarin 25mg"</span> (fatal overdose risk).
+                        </div>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 p-6 rounded-2xl space-y-4 transition-all duration-200 group hover:border-amber-300 dark:hover:border-amber-500/40 hover:-translate-y-1 shadow-sm">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            ⚠️
+                        </div>
+                        <div>
+                            <span class="text-[11px] font-mono text-amber-600 dark:text-amber-400 font-semibold tracking-wider uppercase">02 / Hallucination Risk</span>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mt-1">LLM Guesswork in DDIs</h3>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Generative models make plausible-sounding pharmacological claims without authoritative grounding. They fabricate contraindications or miss fatal drug-drug combinations.
+                        </p>
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/50 text-[11px] font-mono text-slate-600 dark:text-slate-400">
+                            ⚠️ Example: Missing lethal hypotension in <span class="text-amber-600 dark:text-amber-300 font-semibold">Sildenafil + Nitroglycerin</span> interactions.
+                        </div>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 p-6 rounded-2xl space-y-4 transition-all duration-200 group hover:border-blue-300 dark:hover:border-blue-500/40 hover:-translate-y-1 shadow-sm">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            🛡️
+                        </div>
+                        <div>
+                            <span class="text-[11px] font-mono text-blue-600 dark:text-blue-400 font-semibold tracking-wider uppercase">03 / Privacy Violation</span>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mt-1">Cloud Privacy Leaks</h3>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Streaming raw prescription images with patient names, doctor seals, and phone numbers to US-hosted cloud APIs breaches HIPAA, GDPR, and Indian DPDP Act 2023.
+                        </p>
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/50 text-[11px] font-mono text-slate-600 dark:text-slate-400">
+                            ⚠️ Result: Immediate rejection by hospital compliance and insurance underwriters.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Banner -->
+                <div class="p-4 rounded-2xl bg-blue-50/80 dark:bg-gradient-to-r dark:from-blue-950/60 dark:to-slate-900/80 border border-blue-200 dark:border-blue-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-cyan-400 animate-pulse"></div>
+                        <span class="text-slate-700 dark:text-slate-200 font-medium">The Kernel Panics Thesis: <strong>Never let a generative model guess medication safety.</strong></span>
+                    </div>
+                    <span class="text-blue-600 dark:text-blue-400 font-mono font-semibold">Separate visual extraction from deterministic verification →</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 3: ARCHITECTURE ==================== -->
+        <section id="slide-3" class="slide-container slide-hidden-next w-full" data-slide="3" data-title="Architecture Pipeline">
+            <div class="relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-6 sm:p-10 md:p-12 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 backdrop-blur-xl space-y-6">
+                <!-- Top Badge matching photo -->
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 text-xs font-semibold tracking-wider">
+                        <span>🧪</span> <span>4-Stage Clinical Verification Pipeline</span>
+                    </div>
+                    <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Deterministic & Edge Native
+                    </span>
+                </div>
+
+                <!-- Main Flow Title & Subtitle matching photo -->
+                <div class="space-y-2 text-center md:text-left">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        RxHandBD <span class="text-blue-600 dark:text-blue-400">→</span> RxNorm <span class="text-blue-600 dark:text-blue-400">→</span> TWOSIDES <span class="text-blue-600 dark:text-blue-400">→</span> Gemma 4
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm max-w-4xl leading-relaxed">
+                        Inspect every deterministic transition in the end-to-end pipeline: from real handwriting OCR tolerance testing to concept grounding, deterministic interaction querying, and few-shot plain-language clinical synthesis.
+                    </p>
+                </div>
+
+                <!-- 4 Stages Grid matching photo -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+                    <!-- STAGE 1: OCR Testing -->
+                    <div id="pipeline-stage-1" class="bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-400 group cursor-pointer shadow-sm flex flex-col justify-between" onclick="selectArchStep(1)">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl">🔬</span>
+                                <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30">STAGE 1</span>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 dark:text-white">OCR Testing</h4>
+                                <div class="text-[11px] font-mono text-blue-600 dark:text-blue-400 font-semibold mt-0.5">RxHandBD (Zenodo 10.5281/zenodo.18478741)</div>
+                            </div>
+                            <div class="text-[10px] font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/60 p-2 rounded-lg border border-slate-200/80 dark:border-slate-700/50">
+                                Format: Images + CSV (5,578 images, 1,769 medical words)
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Test OCR's tolerance on real prescription handwriting and gate &lt;80% confidence items
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-2.5 border-t border-slate-200 dark:border-slate-700/50 text-[10px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                            <span>Gate: &lt;80% Flag</span>
+                            <span class="text-blue-600 dark:text-blue-400 font-bold group-hover:translate-x-1 transition-transform">Inspect →</span>
+                        </div>
+                    </div>
+
+                    <!-- STAGE 2: Entity Grounding -->
+                    <div id="pipeline-stage-2" class="bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-cyan-400 dark:hover:border-cyan-400 group cursor-pointer shadow-sm flex flex-col justify-between" onclick="selectArchStep(2)">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl">🧭</span>
+                                <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-cyan-100 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-500/30">STAGE 2</span>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 dark:text-white">Entity Grounding</h4>
+                                <div class="text-[11px] font-mono text-cyan-600 dark:text-cyan-400 font-semibold mt-0.5">RxNorm Concept Table</div>
+                            </div>
+                            <div class="text-[10px] font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/60 p-2 rounded-lg border border-slate-200/80 dark:border-slate-700/50">
+                                Format: SQLite / CSV
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Map noisy OCR strings and brand aliases to standard active ingredient names and RxCUIs
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-2.5 border-t border-slate-200 dark:border-slate-700/50 text-[10px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                            <span>Norm: RxCUI Standard</span>
+                            <span class="text-cyan-600 dark:text-cyan-400 font-bold group-hover:translate-x-1 transition-transform">Inspect →</span>
+                        </div>
+                    </div>
+
+                    <!-- STAGE 3: Verification Engine -->
+                    <div id="pipeline-stage-3" class="bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-emerald-400 dark:hover:border-emerald-400 group cursor-pointer shadow-sm flex flex-col justify-between" onclick="selectArchStep(3)">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl">🛡️</span>
+                                <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30">STAGE 3</span>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 dark:text-white">Verification Engine</h4>
+                                <div class="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">DDI Corpus / TWOSIDES</div>
+                            </div>
+                            <div class="text-[10px] font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/60 p-2 rounded-lg border border-slate-200/80 dark:border-slate-700/50">
+                                Format: SQLite Table (twosides_ddi)
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Deterministic query of interacting drug pairs without LLM hallucination
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-2.5 border-t border-slate-200 dark:border-slate-700/50 text-[10px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                            <span>Safety: 0 Hallucination</span>
+                            <span class="text-emerald-600 dark:text-emerald-400 font-bold group-hover:translate-x-1 transition-transform">Inspect →</span>
+                        </div>
+                    </div>
+
+                    <!-- STAGE 4: Gemma 4 Few-Shot Prompts -->
+                    <div id="pipeline-stage-4" class="bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-purple-400 dark:hover:border-purple-400 group cursor-pointer shadow-sm flex flex-col justify-between" onclick="selectArchStep(4)">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl">✨</span>
+                                <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/30">STAGE 4</span>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 dark:text-white">Gemma 4 Few-Shot Prompts</h4>
+                                <div class="text-[11px] font-mono text-purple-600 dark:text-purple-400 font-semibold mt-0.5">n2c2 Medication Event Annotations</div>
+                            </div>
+                            <div class="text-[10px] font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/60 p-2 rounded-lg border border-slate-200/80 dark:border-slate-700/50">
+                                Format: JSON (n2c2_few_shot.json)
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Context examples showing how to summarize dosages and instructions in plain English
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-2.5 border-t border-slate-200 dark:border-slate-700/50 text-[10px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                            <span>Model: Gemma 4 Edge</span>
+                            <span class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform">Inspect →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Scenario Runner (Matching Bottom Photo) -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 space-y-4">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-base">🧪</span>
+                                <h5 class="text-sm font-bold text-slate-900 dark:text-white">Select Test Scenario To Run Pipeline</h5>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Execute the 4 stages against genuine doctor handwritten prescription words</p>
+                        </div>
+                        <button id="run-pipeline-btn" onclick="executePipelineSimulation()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-xs transition-all shadow-md shadow-blue-500/20 flex items-center gap-2 active:scale-95 whitespace-nowrap">
+                            <span id="pipeline-btn-icon">▶</span>
+                            <span id="pipeline-btn-text">Run 4-Stage Pipeline</span>
+                        </button>
+                    </div>
+
+                    <!-- Scenario Selectors & Live Simulation Result -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-1">
+                        <button onclick="setScenario(1)" id="scenario-btn-1" class="p-3 rounded-xl border text-left transition-all text-xs bg-white dark:bg-slate-900 border-blue-500 shadow-sm ring-1 ring-blue-500/20">
+                            <div class="font-bold text-slate-900 dark:text-white flex items-center justify-between">
+                                <span>Scenario 1</span>
+                                <span class="text-[10px] font-mono text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/20 px-1.5 py-0.5 rounded">Contraindicated</span>
+                            </div>
+                            <div class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Sildenafil 50mg + Nitroglycerin 0.4mg</div>
+                        </button>
+                        <button onclick="setScenario(2)" id="scenario-btn-2" class="p-3 rounded-xl border text-left transition-all text-xs bg-slate-100/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300">
+                            <div class="font-bold text-slate-900 dark:text-white flex items-center justify-between">
+                                <span>Scenario 2</span>
+                                <span class="text-[10px] font-mono text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/20 px-1.5 py-0.5 rounded">&lt;80% Gated</span>
+                            </div>
+                            <div class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Warfarin cursive dosage (Ambiguous)</div>
+                        </button>
+                        <button onclick="setScenario(3)" id="scenario-btn-3" class="p-3 rounded-xl border text-left transition-all text-xs bg-slate-100/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300">
+                            <div class="font-bold text-slate-900 dark:text-white flex items-center justify-between">
+                                <span>Scenario 3</span>
+                                <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/20 px-1.5 py-0.5 rounded">Verified Safe</span>
+                            </div>
+                            <div class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Metformin HCl 500mg PO BID AC</div>
+                        </button>
+                    </div>
+
+                    <!-- Live Pipeline Execution Step Feed -->
+                    <div id="pipeline-live-feed" class="p-3.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-1.5 text-slate-600 dark:text-slate-300">
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+                            <span id="pipeline-feed-status">Pipeline Ready: Click 'Run 4-Stage Pipeline' to simulate execution</span>
+                        </div>
+                        <div id="pipeline-feed-details" class="text-[11px] text-slate-500 dark:text-slate-400">
+                            Input: Dual-medication slip with doctor handwritten sigs. Demonstrates RxHandBD OCR confidence check, RxNorm entity normalization, TWOSIDES deterministic safety lookup, and Gemma 4 few-shot natural schedule synthesis.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deep Spec Details Box -->
+                <div id="arch-spec-box" class="p-4 rounded-2xl bg-blue-50/70 dark:bg-slate-800/80 border border-blue-200/80 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 flex items-start gap-4 transition-all">
+                    <span class="text-xl">💡</span>
+                    <div>
+                        <strong class="text-slate-900 dark:text-white" id="arch-spec-title">Click any of the 4 Stages above to view dataset & schema specifications</strong>
+                        <p class="text-slate-600 dark:text-slate-400 mt-0.5" id="arch-spec-desc">The pipeline ensures 100% deterministic safety without relying on generative LLM guesses for drug-drug interactions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 4: BUSINESS MODEL ==================== -->
+        <section id="slide-4" class="slide-container slide-hidden-next w-full" data-slide="4" data-title="Business Model">
+            <div class="relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-8 md:p-14 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 backdrop-blur-xl space-y-6">
+                <!-- Header -->
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="inline-block px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+                        Monetization Strategy
+                    </div>
+                    <span class="text-xs font-mono text-emerald-700 dark:text-emerald-400 font-semibold">High Margin • Diversified Revenue Engine</span>
+                </div>
+
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Multi-Tiered Sustainable Business Model</h2>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">Targeting healthcare inefficiencies across Patients, TPAs/Insurers, and Corporate Employers.</p>
+                </div>
+
+                <!-- 3 Tiers Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                    <!-- Tier 1 -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100/80 dark:hover:bg-slate-800/90 border border-slate-200 dark:border-slate-700/60 p-6 rounded-2xl space-y-4 transition-all duration-200 hover:border-blue-400 flex flex-col justify-between shadow-sm">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-blue-600 dark:text-blue-400 font-mono text-xs uppercase font-bold tracking-wider">Tier 1: B2C</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30 font-semibold">Zero Risk</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Consumer Recovery</h3>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-3xl sm:text-4xl font-extrabold text-blue-600 dark:text-blue-400">10% – 12%</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Convenience / tech audit fee solely on verified money recovered or unjustified hospital billing deductions successfully reversed.
+                            </p>
+                        </div>
+                        <ul class="pt-3 border-t border-slate-200 dark:border-slate-700/60 space-y-2 text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2"><span class="text-blue-600 dark:text-blue-400 font-bold">✓</span> No upfront cost for patients</li>
+                            <li class="flex items-center gap-2"><span class="text-blue-600 dark:text-blue-400 font-bold">✓</span> High consumer trust & word-of-mouth</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tier 2 -->
+                    <div class="bg-gradient-to-b from-emerald-50/80 to-white dark:from-slate-800/80 dark:to-slate-800/40 border-2 border-emerald-500/50 p-6 rounded-2xl space-y-4 transition-all duration-200 shadow-md shadow-emerald-500/10 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute top-0 right-0 px-3 py-0.5 bg-emerald-500 text-white dark:text-slate-950 text-[10px] font-extrabold uppercase tracking-wider rounded-bl-lg">
+                            Primary ARR Engine
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-emerald-700 dark:text-emerald-400 font-mono text-xs uppercase font-bold tracking-wider">Tier 2: B2B</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">InsurTech & TPA SaaS</h3>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400">₹150 – ₹350</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">/ claim</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Automated audit fee to instantly filter non-compliant markups, unbundled billing, and prescription mismatch prior to claim disbursement.
+                            </p>
+                        </div>
+                        <ul class="pt-3 border-t border-emerald-100 dark:border-slate-700/60 space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 dark:text-emerald-400 font-bold">✓</span> Reduces claim cycle from 14 days to 4 mins</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 dark:text-emerald-400 font-bold">✓</span> Saves TPAs 8-15% on fraudulent billing</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tier 3 -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100/80 dark:hover:bg-slate-800/90 border border-slate-200 dark:border-slate-700/60 p-6 rounded-2xl space-y-4 transition-all duration-200 hover:border-purple-400 flex flex-col justify-between shadow-sm">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-purple-700 dark:text-purple-400 font-mono text-xs uppercase font-bold tracking-wider">Tier 3: B2B2C</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/30 font-semibold">Recurring</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Corporate Benefits Desk</h3>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-3xl sm:text-4xl font-extrabold text-purple-600 dark:text-purple-400">₹15 – ₹25</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">/ emp / mo</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Enterprise retainer providing staff with automated claim audits, instant dispute handling, and corporate healthcare safety concierge.
+                            </p>
+                        </div>
+                        <ul class="pt-3 border-t border-slate-200 dark:border-slate-700/60 space-y-2 text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2"><span class="text-purple-600 dark:text-purple-400 font-bold">✓</span> High enterprise retention (&gt;94% NRR)</li>
+                            <li class="flex items-center gap-2"><span class="text-purple-600 dark:text-purple-400 font-bold">✓</span> Zero IT overhead, browser & mobile native</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Financial Trajectory Bar -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+                    <span class="text-slate-500 dark:text-slate-400">Projected Unit Economics:</span>
+                    <div class="flex flex-wrap gap-4 text-slate-700 dark:text-slate-300">
+                        <span>Gross Margin: <strong class="text-emerald-600 dark:text-emerald-400">82%</strong></span>
+                        <span>•</span>
+                        <span>CAC Payback: <strong class="text-blue-600 dark:text-blue-400">&lt; 3.2 Mo</strong></span>
+                        <span>•</span>
+                        <span>Total Indian Health TAM: <strong class="text-slate-900 dark:text-white">$8.4B</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 5: CLINICAL RIGOR ==================== -->
+        <section id="slide-5" class="slide-container slide-hidden-next w-full" data-slide="5" data-title="Clinical Rigor">
+            <div class="relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-8 md:p-14 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 backdrop-blur-xl space-y-6">
+                <!-- Header -->
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="inline-block px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider">
+                        Clinical Rigor & Standards
+                    </div>
+                    <span class="text-xs font-mono text-amber-700 dark:text-amber-400 font-semibold">Pharmacist-in-the-Loop Safeguards</span>
+                </div>
+
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Built to Spec & Ready for Clinical Review</h2>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">Engineered to conform with real-world pharmacy workflows, auditability, and medical governance.</p>
+                </div>
+
+                <!-- 2-Column Clinical Safeguards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    <!-- Safeguard 1 -->
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-4 hover:border-amber-300 dark:hover:border-amber-400/60 transition-all shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <span class="text-amber-700 dark:text-amber-400 font-mono text-xs uppercase tracking-wider font-semibold">Uncertainty Flagging</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 font-mono font-medium">Active Guardrail</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Clinician Escalation Safeguard</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Whenever doctor handwriting has confidence score below threshold (&lt;85%), the system automatically tags <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-900 text-amber-800 dark:text-amber-300 font-mono text-xs">handwriting_uncertain: true</code>.
+                        </p>
+                        <div class="p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/60 space-y-2 text-xs">
+                            <div class="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-medium">
+                                <span>⚠️ Pharmacist Action Required:</span>
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400 text-[11px]">
+                                Dispense lock is enforced until a certified clinician performs one-click verification with license number and digital sign-off.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Safeguard 2 -->
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-4 hover:border-blue-300 dark:hover:border-blue-400/60 transition-all shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <span class="text-blue-700 dark:text-blue-400 font-mono text-xs uppercase tracking-wider font-semibold">Standardization</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-500/20 text-blue-800 dark:text-blue-300 font-mono font-medium">Interoperable</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Agent Skill Specification Compliance</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Packaged strictly according to open standardized Agent Skill specifications. Can be dropped into hospital EHR/EMR runtime environments or autonomous medical agent teams.
+                        </p>
+                        <div class="p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/60 space-y-2 text-xs">
+                            <div class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-medium">
+                                <span>📋 Clinical Dossier Export:</span>
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400 text-[11px]">
+                                Generates cryptographic audit-stamped PDF summaries with masked patient tokens, extracted medications, and contraindication citations.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Checklist -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/70 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
+                    <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                        <span class="text-emerald-600 dark:text-emerald-400 font-bold">✔</span>
+                        <span>Deterministic DDI Engine</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                        <span class="text-emerald-600 dark:text-emerald-400 font-bold">✔</span>
+                        <span>Zero External API Calls</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                        <span class="text-emerald-600 dark:text-emerald-400 font-bold">✔</span>
+                        <span>FDA Black Box Citation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 6: CONCLUSION & Q&A ==================== -->
+        <section id="slide-6" class="slide-container slide-hidden-next w-full" data-slide="6" data-title="Summary & Q&A">
+            <div class="relative bg-gradient-to-br from-blue-900 via-slate-900 to-slate-950 text-white border border-slate-800 rounded-3xl p-8 md:p-14 shadow-2xl backdrop-blur-xl text-center space-y-6">
+                <!-- Header badge -->
+                <div class="inline-block px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold uppercase tracking-wider">
+                    Team Kernel Panics • Hacktoberfest Hack Day
+                </div>
+
+                <!-- Main heading -->
+                <div class="space-y-3 max-w-2xl mx-auto">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
+                        Thank You! Open for Questions
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Araksha-Med demonstrates that lightweight on-device models solve high-stakes healthcare challenges without compromising patient confidentiality or risking generative hallucinations.
+                    </p>
+                </div>
+
+                <!-- Call to Action Buttons -->
+                <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
+                    <a href="https://github.com/Nazia012/Araksha.git" target="_blank" title="Open GitHub Repository" class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-600/30 hover:scale-105 active:scale-95">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                        <span>GitHub Repo</span>
+                    </a>
+                    <button onclick="jumpToSlide(1)" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm transition-all border border-slate-700">
+                        ↺ Restart Presentation
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FLOATING PRESENTER CONTROLS DOCK -->
+    <div class="no-print fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/90 dark:border-slate-700/80 rounded-2xl px-4 py-2.5 shadow-2xl flex items-center gap-2 sm:gap-3 transition-all" id="presenter-dock">
+        <!-- Prev Button -->
+        <button id="prev-slide-btn" title="Previous Slide (← / Backspace)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none transition active:scale-95">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <!-- Slide Dropdown / Counter -->
+        <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-mono">
+            <span id="current-slide-badge" class="font-bold text-blue-600 dark:text-blue-400 text-sm">01</span>
+            <span class="text-slate-400 dark:text-slate-500">/</span>
+            <span class="text-slate-600 dark:text-slate-400">06</span>
+        </div>
+
+        <!-- Next Button -->
+        <button id="next-slide-btn" title="Next Slide (→ / Space)" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none transition active:scale-95">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+
+        <div class="w-px h-5 bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
+
+        <!-- Auto Play / Timer button -->
+        <button id="autoplay-btn" title="Auto Advance Slideshow" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition text-xs flex items-center gap-1 font-medium">
+            <svg id="autoplay-icon-play" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="autoplay-icon-pause" class="w-4 h-4 text-amber-600 dark:text-amber-400 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            <span class="hidden md:inline text-xs">Auto</span>
+        </button>
+
+        <!-- Slide Title in Dock -->
+        <div class="hidden lg:block text-xs text-slate-700 dark:text-slate-300 font-medium max-w-[150px] truncate" id="dock-slide-title">
+            Title & Mission
+        </div>
+    </div>
+
+    <!-- SPEAKER NOTES DRAWER (SIDE MODAL) -->
+    <div id="notes-drawer" class="no-print fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse"></span>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white">Speaker Notes & Cue Cards</h3>
+            </div>
+            <button onclick="toggleSpeakerNotes()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="p-6 flex-1 overflow-y-auto space-y-6" id="notes-content">
+            <!-- Dynamic notes injected by JS -->
+        </div>
+
+        <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span>Press <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white font-mono">N</kbd> to hide</span>
+            <span class="text-blue-600 dark:text-blue-400 font-semibold" id="notes-slide-indicator">Slide 1 of 6</span>
+        </div>
+    </div>
+
+    <!-- SLIDE OVERVIEW GRID MODAL (HIT 'O') -->
+    <div id="grid-modal" class="no-print fixed inset-0 bg-slate-950/60 dark:bg-slate-950/85 backdrop-blur-md z-50 hidden flex-col p-6 sm:p-10 overflow-y-auto">
+        <div class="max-w-5xl mx-auto w-full space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl font-extrabold text-white">Slide Overview Grid</h3>
+                    <p class="text-xs text-slate-300">Click any slide to jump immediately (or press Esc to close)</p>
+                </div>
+                <button onclick="toggleOverviewGrid()" class="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pt-4" id="grid-cards-container">
+                <!-- Dynamically generated preview cards -->
+            </div>
+        </div>
+    </div>
+
+    <!-- KEYBOARD SHORTCUTS MODAL (HIT '?') -->
+    <div id="shortcuts-modal" class="no-print fixed inset-0 bg-slate-950/60 dark:bg-slate-950/85 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl space-y-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-bold">⌨️</span>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Keyboard Shortcuts</h3>
+                </div>
+                <button onclick="toggleShortcutsModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <span class="text-slate-700 dark:text-slate-300">Next Slide</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400"><kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">→</kbd> or <kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">Space</kbd></span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <span class="text-slate-700 dark:text-slate-300">Previous Slide</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400"><kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">←</kbd> or <kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">Backspace</kbd></span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <span class="text-slate-700 dark:text-slate-300">Toggle Fullscreen</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400"><kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">F</kbd></span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <span class="text-slate-700 dark:text-slate-300">Speaker Notes Drawer</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400"><kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">N</kbd></span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <span class="text-slate-700 dark:text-slate-300">Slide Overview Grid</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400"><kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">O</kbd></span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <span class="text-slate-700 dark:text-slate-300">Laser Pointer</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400"><kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">L</kbd></span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <span class="text-slate-700 dark:text-slate-300">Toggle Theme</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400"><kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">T</kbd></span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <span class="text-slate-700 dark:text-slate-300">First / Last Slide</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400"><kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">Home</kbd> / <kbd class="px-2 py-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">End</kbd></span>
+                </div>
+            </div>
+
+            <button onclick="toggleShortcutsModal()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold">
+                Got it, let's pitch!
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        // State
+        const state = {
+            currentSlide: 1,
+            totalSlides: 6,
+            isPresentationMode: true,
+            isNotesOpen: false,
+            isGridOpen: false,
+            isShortcutsOpen: false,
+            isLaserActive: false,
+            isAutoPlaying: false,
+            autoPlayInterval: null,
+            autoPlayDelay: 15000 // 15 seconds per slide
+        };
+
+        // Speaker Notes Data
+        const speakerNotesData = {
+            1: {
+                title: "Slide 1: Title & Vision Hook",
+                timeTarget: "0:00 - 0:45 (45s)",
+                bullets: [
+                    "Hook: 'Judges, every day millions of handwritten prescriptions lead to tragic dosing errors or fatal drug interactions because doctor handwriting is illegible.'",
+                    "Introduce Team Kernel Panics and our project: Araksha-Med.",
+                    "Highlight our dual-track submission: Google Gemma Track and DigitalOcean Open-Source Track.",
+                    "Emphasize our core breakthrough: Zero cloud data transmission combined with deterministic pharmacology safety."
+                ],
+                tip: "Smile, project confidence, and state the project name clearly!"
+            },
+            2: {
+                title: "Slide 2: The Critical Challenge",
+                timeTarget: "0:45 - 1:45 (60s)",
+                bullets: [
+                    "Point 1: Ambiguous cursive handwriting. Even pharmacists misread dosages like Warfarin 2.5mg vs 25mg.",
+                    "Point 2: Why generic cloud LLMs are dangerous! LLMs hallucinate drug-drug interactions. In healthcare, a plausible guess can be fatal.",
+                    "Point 3: Cloud privacy compliance. Hospitals cannot stream patient PII to external servers without violating HIPAA, GDPR, and DPDP 2023.",
+                    "Conclude: 'We cannot rely on blind cloud generative AI for patient lives.'"
+                ],
+                tip: "Emphasize the Sildenafil + Nitroglycerin danger — judges love real clinical examples."
+            },
+            3: {
+                title: "Slide 3: RxHandBD → RxNorm → TWOSIDES → Gemma 4",
+                timeTarget: "1:45 - 2:45 (60s)",
+                bullets: [
+                    "Introduce our 4-Stage Clinical Verification Pipeline matching our live demo.",
+                    "Stage 1 (OCR Testing): RxHandBD benchmark with 5,578 handwriting images; hard-gates any reading below 80% confidence.",
+                    "Stage 2 (Entity Grounding): RxNorm concept table maps noisy OCR strings into standard RxCUIs via local SQLite.",
+                    "Stage 3 (Verification Engine): TWOSIDES adverse DDI corpus queried deterministically with ZERO hallucination.",
+                    "Stage 4 (Clinical Synthesis): Gemma 4 few-shot prompts conditioned on n2c2 annotations produce plain-English instructions.",
+                    "Live action: Click 'Run 4-Stage Pipeline' right here to demonstrate sequential execution!"
+                ],
+                tip: "Run the interactive pipeline simulator live on this slide — judges will be wowed by the sequential dataflow!"
+            },
+            4: {
+                title: "Slide 4: Business Model & Monetization",
+                timeTarget: "2:45 - 3:45 (60s)",
+                bullets: [
+                    "Walk through our 3 revenue tiers:",
+                    "Tier 1 (B2C): 10% - 12% success fee on money recovered from unfair hospital deductions.",
+                    "Tier 2 (B2B SaaS): ₹150 - ₹350 per claim audit fee paid by TPAs to prevent unbundled markups and fraudulent payouts.",
+                    "Tier 3 (B2B2C): Corporate wellness retainer at ₹15 - ₹25 per employee/month.",
+                    "State the metrics: 82% gross margins with sub-3.2 month CAC payback."
+                ],
+                tip: "Highlight that TPA claim processing drops from 14 days down to 4 minutes."
+            },
+            5: {
+                title: "Slide 5: Clinical Rigor & Pharmacist Guardrails",
+                timeTarget: "3:45 - 4:30 (45s)",
+                bullets: [
+                    "Explain our Clinician Escalation Safeguard: If handwriting confidence is below 85%, dispensing is hard-locked until pharmacist verification.",
+                    "Agent Skill Specification: Fully compatible with open agent protocols and hospital EHRs.",
+                    "Showcase the cryptographic audit-stamped PDF export with clinician digital signatures."
+                ],
+                tip: "This proves to judges that Kernel Panics thought deeply about clinical governance and liability."
+            },
+            6: {
+                title: "Slide 6: Conclusion & Judge Q&A",
+                timeTarget: "4:30 - 5:00+ (Call to Action)",
+                bullets: [
+                    "Summarize: 'Araksha-Med proves that privacy-first, on-device AI can be clinically rigorous, economically viable, and save lives.'",
+                    "Direct attention to the open-source repository at github.com/Nazia012/Araksha.",
+                    "Thank the judges and invite questions immediately."
+                ],
+                tip: "Smile, pause for the judges, and be ready to field questions about on-device RAM and latency!"
+            }
+        };
+
+        // DOM Elements
+        const slides = document.querySelectorAll('.slide-container');
+        const prevBtn = document.getElementById('prev-slide-btn');
+        const nextBtn = document.getElementById('next-slide-btn');
+        const currentSlideBadge = document.getElementById('current-slide-badge');
+        const dockSlideTitle = document.getElementById('dock-slide-title');
+        const headerProgressText = document.getElementById('header-progress-text');
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        const notesDrawer = document.getElementById('notes-drawer');
+        const notesContent = document.getElementById('notes-content');
+        const notesIndicator = document.getElementById('notes-slide-indicator');
+        const gridModal = document.getElementById('grid-modal');
+        const shortcutsModal = document.getElementById('shortcuts-modal');
+        const laserPointer = document.getElementById('laser-pointer');
+        const laserBtn = document.getElementById('laser-toggle-btn');
+        const autoplayBtn = document.getElementById('autoplay-btn');
+        const autoplayIconPlay = document.getElementById('autoplay-icon-play');
+        const autoplayIconPause = document.getElementById('autoplay-icon-pause');
+        const viewModeBtn = document.getElementById('view-mode-btn');
+        const viewModeLabel = document.getElementById('view-mode-label');
+
+        // Update Slide Navigation
+        function updateSlideUI() {
+            if (state.isPresentationMode) {
+                slides.forEach((slide, idx) => {
+                    const slideNum = idx + 1;
+                    slide.classList.remove('slide-active', 'slide-hidden-prev', 'slide-hidden-next');
+                    if (slideNum === state.currentSlide) {
+                        slide.classList.add('slide-active');
+                    } else if (slideNum < state.currentSlide) {
+                        slide.classList.add('slide-hidden-prev');
+                    } else {
+                        slide.classList.add('slide-hidden-next');
+                    }
+                });
+            } else {
+                slides.forEach(slide => {
+                    slide.classList.remove('slide-hidden-prev', 'slide-hidden-next');
+                    slide.classList.add('slide-active');
+                });
+            }
+
+            // Update badges & progress
+            const currentFormatted = String(state.currentSlide).padStart(2, '0');
+            currentSlideBadge.textContent = currentFormatted;
+            const percentage = Math.round((state.currentSlide / state.totalSlides) * 100);
+            headerProgressText.textContent = `${state.currentSlide} of ${state.totalSlides} (${percentage}%)`;
+            progressBarFill.style.width = `${percentage}%`;
+
+            // Update title
+            const activeSlideElem = document.getElementById(`slide-${state.currentSlide}`);
+            if (activeSlideElem) {
+                const title = activeSlideElem.getAttribute('data-title') || `Slide ${state.currentSlide}`;
+                dockSlideTitle.textContent = title;
+            }
+
+            // Button states
+            prevBtn.disabled = state.currentSlide <= 1;
+            nextBtn.disabled = state.currentSlide >= state.totalSlides;
+
+            // Update notes
+            renderSpeakerNotes();
+        }
+
+        function jumpToSlide(num) {
+            if (num < 1 || num > state.totalSlides) return;
+            state.currentSlide = num;
+            updateSlideUI();
+            if (!state.isPresentationMode) {
+                const target = document.getElementById(`slide-${num}`);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function nextSlide() {
+            if (state.currentSlide < state.totalSlides) {
+                jumpToSlide(state.currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (state.currentSlide > 1) {
+                jumpToSlide(state.currentSlide - 1);
+            }
+        }
+
+        // Render Speaker Notes
+        function renderSpeakerNotes() {
+            const data = speakerNotesData[state.currentSlide] || {
+                title: `Slide ${state.currentSlide}`,
+                timeTarget: "0:45",
+                bullets: ["Present core slide takeaways.", "Engage with the judges."],
+                tip: "Keep talking points concise and confident."
+            };
+
+            notesIndicator.textContent = `Slide ${state.currentSlide} of ${state.totalSlides}`;
+
+            notesContent.innerHTML = `
+                <div class="space-y-4">
+                    <div class="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30">
+                        <div class="text-[11px] font-mono text-blue-700 dark:text-blue-400 font-bold uppercase tracking-wider">Suggested Timing</div>
+                        <div class="text-sm font-bold text-slate-900 dark:text-white mt-0.5">${data.timeTarget}</div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">${data.title}</h4>
+                        <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-300">
+                            ${data.bullets.map(b => `<li class="flex items-start gap-2.5"><span class="text-blue-600 dark:text-blue-400 mt-0.5">●</span><span>${b}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30">
+                        <div class="text-[11px] font-mono text-amber-700 dark:text-amber-400 font-bold uppercase">💡 Pro-Speaker Tip</div>
+                        <p class="text-xs text-amber-800 dark:text-amber-200 mt-1">${data.tip}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleSpeakerNotes() {
+            state.isNotesOpen = !state.isNotesOpen;
+            if (state.isNotesOpen) {
+                notesDrawer.classList.remove('translate-x-full');
+            } else {
+                notesDrawer.classList.add('translate-x-full');
+            }
+        }
+
+        // Overview Grid
+        function buildOverviewGrid() {
+            const container = document.getElementById('grid-cards-container');
+            container.innerHTML = '';
+            for (let i = 1; i <= state.totalSlides; i++) {
+                const slideElem = document.getElementById(`slide-${i}`);
+                const title = slideElem ? slideElem.getAttribute('data-title') : `Slide ${i}`;
+                const isActive = (i === state.currentSlide);
+                
+                const card = document.createElement('div');
+                card.className = `p-5 rounded-2xl cursor-pointer border transition-all text-left flex flex-col justify-between h-40 ${
+                    isActive 
+                        ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/25' 
+                        : 'bg-slate-900/90 text-slate-100 border-slate-800 hover:border-slate-700 hover:bg-slate-800'
+                }`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold ${isActive ? 'text-white' : 'text-slate-400'}">SLIDE 0${i}</span>
+                        ${isActive ? '<span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-white text-blue-700 font-extrabold">ACTIVE</span>' : ''}
+                    </div>
+                    <h5 class="text-base font-bold text-white">${title}</h5>
+                    <div class="text-[11px] ${isActive ? 'text-blue-100' : 'text-slate-400'}">Click to jump →</div>
+                `;
+                card.onclick = () => {
+                    jumpToSlide(i);
+                    toggleOverviewGrid();
+                };
+                container.appendChild(card);
+            }
+        }
+
+        function toggleOverviewGrid() {
+            state.isGridOpen = !state.isGridOpen;
+            if (state.isGridOpen) {
+                buildOverviewGrid();
+                gridModal.classList.remove('hidden');
+                gridModal.classList.add('flex');
+            } else {
+                gridModal.classList.add('hidden');
+                gridModal.classList.remove('flex');
+            }
+        }
+
+        function toggleShortcutsModal() {
+            state.isShortcutsOpen = !state.isShortcutsOpen;
+            if (state.isShortcutsOpen) {
+                shortcutsModal.classList.remove('hidden');
+                shortcutsModal.classList.add('flex');
+            } else {
+                shortcutsModal.classList.add('hidden');
+                shortcutsModal.classList.remove('flex');
+            }
+        }
+
+        // Laser pointer
+        function toggleLaserPointer() {
+            state.isLaserActive = !state.isLaserActive;
+            if (state.isLaserActive) {
+                laserPointer.style.display = 'block';
+                laserBtn.classList.add('bg-red-500/20', 'border-red-500/50', 'text-red-600', 'dark:text-white');
+            } else {
+                laserPointer.style.display = 'none';
+                laserBtn.classList.remove('bg-red-500/20', 'border-red-500/50', 'text-red-600', 'dark:text-white');
+            }
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            if (state.isLaserActive) {
+                laserPointer.style.left = `${e.clientX}px`;
+                laserPointer.style.top = `${e.clientY}px`;
+            }
+        });
+
+        // Autoplay Slideshow
+        function toggleAutoPlay() {
+            state.isAutoPlaying = !state.isAutoPlaying;
+            if (state.isAutoPlaying) {
+                autoplayIconPlay.classList.add('hidden');
+                autoplayIconPause.classList.remove('hidden');
+                autoplayBtn.classList.add('bg-amber-100', 'dark:bg-amber-500/20', 'border-amber-400');
+                state.autoPlayInterval = setInterval(() => {
+                    if (state.currentSlide < state.totalSlides) {
+                        nextSlide();
+                    } else {
+                        jumpToSlide(1);
+                    }
+                }, state.autoPlayDelay);
+            } else {
+                autoplayIconPlay.classList.remove('hidden');
+                autoplayIconPause.classList.add('hidden');
+                autoplayBtn.classList.remove('bg-amber-100', 'dark:bg-amber-500/20', 'border-amber-400');
+                clearInterval(state.autoPlayInterval);
+            }
+        }
+
+        // Fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // Theme Toggle (Light Default vs Dark)
+        function toggleTheme() {
+            const html = document.documentElement;
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const lightIcon = document.getElementById('theme-icon-light');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                darkIcon.classList.add('hidden');
+                lightIcon.classList.remove('hidden');
+            } else {
+                html.classList.add('dark');
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+            }
+        }
+
+        // View Mode Toggle (Slide vs Continuous Scroll)
+        function toggleViewMode() {
+            state.isPresentationMode = !state.isPresentationMode;
+            if (state.isPresentationMode) {
+                viewModeLabel.textContent = "Slide Mode";
+                document.getElementById('deck-wrapper').classList.remove('space-y-16');
+            } else {
+                viewModeLabel.textContent = "Scroll Mode";
+                document.getElementById('deck-wrapper').classList.add('space-y-16');
+            }
+            updateSlideUI();
+        }
+
+        // Current selected scenario
+        let currentScenario = 1;
+        const scenarios = {
+            1: {
+                title: "Sildenafil 50mg + Nitroglycerin 0.4mg",
+                stage1: "RxHandBD OCR: Sildenafil (96% conf) | Nitroglycerin (91% conf) → Passed gate (≥80%)",
+                stage2: "RxNorm Concept Grounding: Mapped to RxCUI 36567 (Sildenafil) and RxCUI 7414 (Nitroglycerin)",
+                stage3: "TWOSIDES DDI Corpus: [CRITICAL ALERT] Severe life-threatening hypotension & vascular collapse contraindication detected!",
+                stage4: "Gemma 4 Synthesis: 'DO NOT TAKE TOGETHER. Concurrent use of Sildenafil and Nitroglycerin can cause a fatal drop in blood pressure. Consult prescribing doctor immediately.'"
+            },
+            2: {
+                title: "Warfarin cursive dosage script",
+                stage1: "RxHandBD OCR: Warfarin detected (88%), dosage unit ambiguous (62% conf) → GATED (<80% threshold)!",
+                stage2: "RxNorm Concept Grounding: Ingredient mapped to RxCUI 11289 (Warfarin), dosage flagged unverified",
+                stage3: "TWOSIDES DDI Corpus: High bleeding risk interaction profile with NSAIDs / antiplatelets",
+                stage4: "Gemma 4 Synthesis: 'Doctor handwriting unclear on dosage strength. Medication is locked pending verified pharmacist physical review.'"
+            },
+            3: {
+                title: "Metformin HCl 500mg PO BID AC",
+                stage1: "RxHandBD OCR: Metformin HCl 500mg (98% conf), sig BID AC (94% conf) → Passed gate",
+                stage2: "RxNorm Concept Grounding: Mapped to RxCUI 6809 (Metformin Hydrochloride 500 MG Oral Tablet)",
+                stage3: "TWOSIDES DDI Corpus: No contraindications found with current patient active profile",
+                stage4: "Gemma 4 Synthesis: 'Take 1 tablet (500mg) twice daily with breakfast and dinner. Avoid excessive alcohol consumption.'"
+            }
+        };
+
+        function setScenario(num) {
+            currentScenario = num;
+            [1, 2, 3].forEach(i => {
+                const btn = document.getElementById(`scenario-btn-${i}`);
+                if (btn) {
+                    if (i === num) {
+                        btn.className = "p-3 rounded-xl border text-left transition-all text-xs bg-white dark:bg-slate-900 border-blue-500 shadow-sm ring-1 ring-blue-500/20";
+                    } else {
+                        btn.className = "p-3 rounded-xl border text-left transition-all text-xs bg-slate-100/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300";
+                    }
+                }
+            });
+            const feedStatus = document.getElementById('pipeline-feed-status');
+            const feedDetails = document.getElementById('pipeline-feed-details');
+            feedStatus.textContent = `Scenario ${num} Selected: ${scenarios[num].title}`;
+            feedDetails.textContent = "Ready to run. Click '▶ Run 4-Stage Pipeline' to see how RxHandBD, RxNorm, TWOSIDES, and Gemma 4 process this prescription.";
+        }
+
+        let isRunningPipeline = false;
+        function executePipelineSimulation() {
+            if (isRunningPipeline) return;
+            isRunningPipeline = true;
+            const btn = document.getElementById('run-pipeline-btn');
+            const btnIcon = document.getElementById('pipeline-btn-icon');
+            const btnText = document.getElementById('pipeline-btn-text');
+            const feedStatus = document.getElementById('pipeline-feed-status');
+            const feedDetails = document.getElementById('pipeline-feed-details');
+            const sc = scenarios[currentScenario];
+
+            btn.classList.add('opacity-80', 'pointer-events-none');
+            btnIcon.textContent = "⏳";
+            btnText.textContent = "Running Pipeline...";
+
+            // Clear previous stage highlights
+            [1, 2, 3, 4].forEach(s => {
+                const stageEl = document.getElementById(`pipeline-stage-${s}`);
+                if (stageEl) stageEl.classList.remove('ring-4', 'ring-blue-500', 'ring-cyan-500', 'ring-emerald-500', 'ring-purple-500', 'bg-blue-100/50', 'dark:bg-blue-900/40');
+            });
+
+            // Stage 1
+            setTimeout(() => {
+                highlightStage(1, 'ring-blue-500');
+                feedStatus.innerHTML = `<span class="text-blue-600 dark:text-blue-400 font-bold">Stage 1: RxHandBD OCR Testing</span>`;
+                feedDetails.textContent = sc.stage1;
+                selectArchStep(1);
+            }, 300);
+
+            // Stage 2
+            setTimeout(() => {
+                highlightStage(2, 'ring-cyan-500');
+                feedStatus.innerHTML = `<span class="text-cyan-600 dark:text-cyan-400 font-bold">Stage 2: RxNorm Entity Grounding</span>`;
+                feedDetails.textContent = sc.stage2;
+                selectArchStep(2);
+            }, 1500);
+
+            // Stage 3
+            setTimeout(() => {
+                highlightStage(3, 'ring-emerald-500');
+                feedStatus.innerHTML = `<span class="text-emerald-600 dark:text-emerald-400 font-bold">Stage 3: TWOSIDES Deterministic Verification</span>`;
+                feedDetails.textContent = sc.stage3;
+                selectArchStep(3);
+            }, 2700);
+
+            // Stage 4
+            setTimeout(() => {
+                highlightStage(4, 'ring-purple-500');
+                feedStatus.innerHTML = `<span class="text-purple-600 dark:text-purple-400 font-bold">Stage 4: Gemma 4 Few-Shot Synthesis</span>`;
+                feedDetails.textContent = sc.stage4;
+                selectArchStep(4);
+            }, 3900);
+
+            // Finish
+            setTimeout(() => {
+                btn.classList.remove('opacity-80', 'pointer-events-none');
+                btnIcon.textContent = "✔";
+                btnText.textContent = "Execution Complete";
+                setTimeout(() => {
+                    btnIcon.textContent = "▶";
+                    btnText.textContent = "Run 4-Stage Pipeline";
+                    isRunningPipeline = false;
+                }, 2000);
+            }, 5100);
+        }
+
+        function highlightStage(stageNum, ringClass) {
+            [1, 2, 3, 4].forEach(s => {
+                const el = document.getElementById(`pipeline-stage-${s}`);
+                if (el) {
+                    if (s === stageNum) {
+                        el.classList.add('ring-2', ringClass);
+                    } else {
+                        el.classList.remove('ring-2', 'ring-blue-500', 'ring-cyan-500', 'ring-emerald-500', 'ring-purple-500');
+                    }
+                }
+            });
+        }
+
+        // Interactive Architecture Step selector matching photo datasets
+        function selectArchStep(step) {
+            const titleEl = document.getElementById('arch-spec-title');
+            const descEl = document.getElementById('arch-spec-desc');
+            const specs = {
+                1: {
+                    title: "Stage 1: RxHandBD (Zenodo 10.5281/zenodo.18478741) OCR Tolerance Testing",
+                    desc: "Trained and benchmarked on 5,578 prescription images across 1,769 medical words. Automatically triggers a safety interlock gate for any line items extracted with under 80% confidence, routing directly to human clinicians."
+                },
+                2: {
+                    title: "Stage 2: RxNorm Concept Table Entity Grounding (SQLite / CSV)",
+                    desc: "Maps noisy OCR strings and colloquial brand aliases into standardized active ingredient names and official RxCUIs (National Library of Medicine). Eliminates brand confusion and establishes clean pharmacological identity."
+                },
+                3: {
+                    title: "Stage 3: TWOSIDES DDI Corpus Deterministic Verification Engine (twosides_ddi)",
+                    desc: "Performs mathematically grounded SQL queries against the pre-indexed TWOSIDES drug-drug adverse reaction database. Completely bypasses generative LLM guesses to provide 100% verifiable clinical safety contraindications."
+                },
+                4: {
+                    title: "Stage 4: Gemma 4 Few-Shot Prompts (n2c2 Medication Event Annotations)",
+                    desc: "Uses n2c2 few-shot context examples (n2c2_few_shot.json) to guide Gemma 4 on-device NLP. Generates empathetic, plain-language patient schedules, dietary contraindications, and cautionary instructions without clinical jargon."
+                }
+            };
+            if (specs[step]) {
+                titleEl.textContent = specs[step].title;
+                descEl.textContent = specs[step].desc;
+            }
+        }
+
+        // Keyboard Event Handlers
+        document.addEventListener('keydown', (e) => {
+            // Ignore if typing in input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            switch (e.key) {
+                case 'ArrowRight':
+                case ' ':
+                case 'PageDown':
+                    e.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                case 'Backspace':
+                case 'PageUp':
+                    e.preventDefault();
+                    prevSlide();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    jumpToSlide(1);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    jumpToSlide(state.totalSlides);
+                    break;
+                case 'f':
+                case 'F':
+                    e.preventDefault();
+                    toggleFullscreen();
+                    break;
+                case 'n':
+                case 'N':
+                    e.preventDefault();
+                    toggleSpeakerNotes();
+                    break;
+                case 'o':
+                case 'O':
+                    e.preventDefault();
+                    toggleOverviewGrid();
+                    break;
+                case 'l':
+                case 'L':
+                    e.preventDefault();
+                    toggleLaserPointer();
+                    break;
+                case 't':
+                case 'T':
+                    e.preventDefault();
+                    toggleTheme();
+                    break;
+                case 'v':
+                case 'V':
+                    e.preventDefault();
+                    toggleViewMode();
+                    break;
+                case '?':
+                    e.preventDefault();
+                    toggleShortcutsModal();
+                    break;
+                case 'Escape':
+                    if (state.isGridOpen) toggleOverviewGrid();
+                    if (state.isShortcutsOpen) toggleShortcutsModal();
+                    if (state.isNotesOpen) toggleSpeakerNotes();
+                    break;
+            }
+        });
+
+        // Button Listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        document.getElementById('notes-toggle-btn').addEventListener('click', toggleSpeakerNotes);
+        document.getElementById('grid-toggle-btn').addEventListener('click', toggleOverviewGrid);
+        document.getElementById('shortcuts-modal').addEventListener('click', (e) => {
+            if (e.target === shortcutsModal) toggleShortcutsModal();
+        });
+        document.getElementById('grid-modal').addEventListener('click', (e) => {
+            if (e.target === gridModal) toggleOverviewGrid();
+        });
+        document.getElementById('laser-toggle-btn').addEventListener('click', toggleLaserPointer);
+        autoplayBtn.addEventListener('click', toggleAutoPlay);
+        document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
+        document.getElementById('theme-toggle-btn').addEventListener('click', toggleTheme);
+        document.getElementById('help-btn').addEventListener('click', toggleShortcutsModal);
+        viewModeBtn.addEventListener('click', toggleViewMode);
+
+        // Touch swipe support for mobile/tablets
+        let touchStartX = 0;
+        let touchEndX = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const threshold = 50;
+            if (touchEndX < touchStartX - threshold) {
+                nextSlide();
+            } else if (touchEndX > touchStartX + threshold) {
+                prevSlide();
+            }
+        }
+
+        // Initialize UI
+        updateSlideUI();
+    </script>
+</body>
+</html>

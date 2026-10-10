@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Araksha-Med | Team Kernel Panics Pitch Deck</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-fade-in { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .float-card { animation: floatSlow 6s ease-in-out infinite; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- PRESENTATION CONTAINER -->
+    <div class="max-w-5xl mx-auto p-6 space-y-24 py-12">
+
+        <!-- SLIDE 1: TITLE -->
+        <section class="relative bg-white border border-slate-200/80 rounded-3xl p-10 md:p-16 float-card animate-fade-in shadow-xl shadow-blue-500/5 overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="space-y-6 relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold uppercase tracking-wider">
+                    <span>🏆 Team Kernel Panics</span> • <span>Hacktoberfest Hack Day</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-blue-600 bg-clip-text text-transparent">
+                    Araksha-Med
+                </h1>
+                <p class="text-xl md:text-2xl text-blue-600 font-medium">
+                    On-Device Medical Prescription & Drug Interaction Inspector
+                </p>
+                <p class="text-slate-600 max-w-2xl text-base md:text-lg leading-relaxed">
+                    Privacy-First Edge AI combining Google Gemma multimodal extraction with a deterministic safety verification engine.
+                </p>
+                <div class="pt-4 flex flex-wrap gap-4 text-xs font-mono text-slate-600">
+                    <span class="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200">Google Gemma Track</span>
+                    <span class="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200">DigitalOcean Open-Source Track</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: THE PROBLEM -->
+        <section class="bg-white/80 backdrop-blur border border-slate-200/80 rounded-3xl p-8 md:p-12 animate-fade-in delay-100 shadow-xl shadow-slate-200/50">
+            <div class="space-y-6">
+                <div class="inline-block px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-600 text-xs font-semibold uppercase tracking-wider">
+                    The Critical Challenge
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Why Current Medical AI Falls Short</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                    <div class="bg-slate-50 border border-slate-200/80 p-6 rounded-2xl space-y-3 transition-all hover:shadow-md">
+                        <div class="text-2xl">✍️</div>
+                        <h3 class="text-lg font-semibold text-slate-900">Ambiguous Handwriting</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Illegible doctor notes routinely lead to severe dosage and interpretation mistakes.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200/80 p-6 rounded-2xl space-y-3 transition-all hover:shadow-md">
+                        <div class="text-2xl">⚠️</div>
+                        <h3 class="text-lg font-semibold text-slate-900">LLM Hallucinations</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Pure generative AI models guess drug-drug interactions (DDIs), risking patient safety.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200/80 p-6 rounded-2xl space-y-3 transition-all hover:shadow-md">
+                        <div class="text-2xl">🛡️</div>
+                        <h3 class="text-lg font-semibold text-slate-900">Cloud Privacy Leaks</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Uploading raw prescription images with patient PII to remote servers violates compliance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: ARCHITECTURE PIPELINE -->
+        <section class="bg-white/90 backdrop-blur border border-slate-200/90 rounded-3xl p-8 md:p-12 animate-fade-in delay-200 shadow-xl shadow-slate-200/50 space-y-6">
+            <div class="space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold tracking-wider">
+                    <span>🧪</span> <span>4-Stage Clinical Verification Pipeline</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    RxHandBD <span class="text-blue-600">→</span> RxNorm <span class="text-blue-600">→</span> TWOSIDES <span class="text-blue-600">→</span> Gemma 4
+                </h2>
+                <p class="text-slate-600 text-sm max-w-3xl leading-relaxed">
+                    Inspect every deterministic transition in the end-to-end pipeline: from real handwriting OCR tolerance testing to concept grounding, deterministic interaction querying, and few-shot plain-language clinical synthesis.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4">
+                    <!-- STAGE 1 -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 relative transition-all hover:border-blue-400 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">🔬</span>
+                            <span class="text-[10px] font-mono text-blue-700 font-bold bg-blue-100 px-2 py-0.5 rounded">STAGE 1</span>
+                        </div>
+                        <h4 class="text-base font-bold text-slate-900 mt-2">OCR Testing</h4>
+                        <div class="text-[11px] font-mono text-blue-600 font-semibold">RxHandBD (Zenodo 10.5281/zenodo.18478741)</div>
+                        <div class="text-[10px] font-mono text-slate-500 bg-white p-2 rounded border border-slate-200">
+                            Format: Images + CSV (5,578 images, 1,769 medical words)
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Test OCR's tolerance on real prescription handwriting and gate &lt;80% confidence items
+                        </p>
+                    </div>
+
+                    <!-- STAGE 2 -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 relative transition-all hover:border-cyan-400 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">🧭</span>
+                            <span class="text-[10px] font-mono text-cyan-700 font-bold bg-cyan-100 px-2 py-0.5 rounded">STAGE 2</span>
+                        </div>
+                        <h4 class="text-base font-bold text-slate-900 mt-2">Entity Grounding</h4>
+                        <div class="text-[11px] font-mono text-cyan-600 font-semibold">RxNorm Concept Table</div>
+                        <div class="text-[10px] font-mono text-slate-500 bg-white p-2 rounded border border-slate-200">
+                            Format: SQLite / CSV
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Map noisy OCR strings and brand aliases to standard active ingredient names and RxCUIs
+                        </p>
+                    </div>
+
+                    <!-- STAGE 3 -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 relative transition-all hover:border-emerald-400 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">🛡️</span>
+                            <span class="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">STAGE 3</span>
+                        </div>
+                        <h4 class="text-base font-bold text-slate-900 mt-2">Verification Engine</h4>
+                        <div class="text-[11px] font-mono text-emerald-600 font-semibold">DDI Corpus / TWOSIDES</div>
+                        <div class="text-[10px] font-mono text-slate-500 bg-white p-2 rounded border border-slate-200">
+                            Format: SQLite Table (twosides_ddi)
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Deterministic query of interacting drug pairs without LLM hallucination
+                        </p>
+                    </div>
+
+                    <!-- STAGE 4 -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 relative transition-all hover:border-purple-400 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">✨</span>
+                            <span class="text-[10px] font-mono text-purple-700 font-bold bg-purple-100 px-2 py-0.5 rounded">STAGE 4</span>
+                        </div>
+                        <h4 class="text-base font-bold text-slate-900 mt-2">Gemma 4 Few-Shot Prompts</h4>
+                        <div class="text-[11px] font-mono text-purple-600 font-semibold">n2c2 Medication Event Annotations</div>
+                        <div class="text-[10px] font-mono text-slate-500 bg-white p-2 rounded border border-slate-200">
+                            Format: JSON (n2c2_few_shot.json)
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Context examples showing how to summarize dosages and instructions in plain English
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: BUSINESS MODEL -->
+        <section class="bg-white/80 backdrop-blur border border-slate-200/80 rounded-3xl p-8 md:p-12 animate-fade-in delay-300 shadow-xl shadow-slate-200/50">
+            <div class="space-y-6">
+                <div class="inline-block px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-semibold uppercase tracking-wider">
+                    Monetization Strategy
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Multi-Tiered Sustainable Business Model</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3 transition-all hover:border-blue-300">
+                        <div class="text-blue-600 font-mono text-xs uppercase font-bold">Tier 1: B2C</div>
+                        <h3 class="text-xl font-bold text-slate-900">Consumer Recovery</h3>
+                        <div class="text-3xl font-extrabold text-blue-600">10% to 12%</div>
+                        <p class="text-xs text-slate-600 leading-relaxed">Convenience / tech audit fee solely on verified money recovered or deductions reversed.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3 transition-all hover:border-emerald-300">
+                        <div class="text-emerald-600 font-mono text-xs uppercase font-bold">Tier 2: B2B</div>
+                        <h3 class="text-xl font-bold text-slate-900">InsurTech & TPA SaaS</h3>
+                        <div class="text-3xl font-extrabold text-emerald-600">₹150 - ₹350</div>
+                        <p class="text-xs text-slate-600 leading-relaxed">Per-claim automated audit fee solely to filter non-compliant markups and unbundled billing prior to reimbursement disbursement.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3 transition-all hover:border-purple-300">
+                        <div class="text-purple-600 font-mono text-xs uppercase font-bold">Tier 3: B2B2C</div>
+                        <h3 class="text-xl font-bold text-slate-900">Corporate Benefits Desk</h3>
+                        <div class="text-3xl font-extrabold text-purple-600">₹15 - ₹25</div>
+                        <p class="text-xs text-slate-600 leading-relaxed">Annual retainer per employee per month to provide staff with automated, zero-touch claim audits and instant dispute resolution.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: CLINICAL RIGOR -->
+        <section class="bg-white/80 backdrop-blur border border-slate-200/80 rounded-3xl p-8 md:p-12 animate-fade-in delay-400 shadow-xl shadow-slate-200/50">
+            <div class="space-y-6">
+                <div class="inline-block px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-600 text-xs font-semibold uppercase tracking-wider">
+                    Clinical Rigor & Standards
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Built to Spec & Ready for Review</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="text-blue-600 font-mono text-xs uppercase tracking-wider font-semibold">Uncertainty Flagging</div>
+                        <h4 class="text-lg font-semibold text-slate-900">Clinician Escalation Safeguard</h4>
+                        <p class="text-sm text-slate-600">Ambiguous handwriting triggers `handwriting_uncertain: true` tags, routing prescriptions directly to qualified pharmacists.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="text-blue-600 font-mono text-xs uppercase tracking-wider font-semibold">Open Standard Compliance</div>
+                        <h4 class="text-lg font-semibold text-slate-900">Agent Skill Specification</h4>
+                        <p class="text-sm text-slate-600">Packaged under standardized agent skill frameworks for seamless local runtime integration.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: CONCLUSION & Q&A -->
+        <section class="bg-gradient-to-br from-blue-900 via-slate-900 to-slate-900 text-white rounded-3xl p-8 md:p-12 animate-fade-in delay-500 shadow-xl text-center space-y-6">
+            <div class="inline-block px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold uppercase tracking-wider">
+                Team Kernel Panics • Hacktoberfest Hack Day
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Thank You! Open for Questions</h2>
+            <p class="text-slate-300 max-w-xl mx-auto text-sm md:text-base leading-relaxed">
+                Araksha-Med demonstrates that lightweight local models can solve real-world healthcare problems without compromising patient confidentiality.
+            </p>
+            <div class="pt-2">
+                <a href="https://github.com/Nazia012/Araksha.git" target="_blank" title="Open GitHub Repository" class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-600/30">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    <span>GitHub Repo</span>
+                </a>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>
