@@ -390,7 +390,7 @@
                 <!-- 4 Stages Grid matching photo -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
                     <!-- STAGE 1: OCR Testing -->
-                    <div id="pipeline-stage-1" class="bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-400 group cursor-pointer shadow-sm flex flex-col justify-between" onclick="selectArchStep(1)">
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-400 shadow-sm flex flex-col justify-between">
                         <div class="space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-2xl">🔬</span>
@@ -407,14 +407,10 @@
                                 Test OCR's tolerance on real prescription handwriting and gate &lt;80% confidence items
                             </p>
                         </div>
-                        <div class="mt-4 pt-2.5 border-t border-slate-200 dark:border-slate-700/50 text-[10px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                            <span>Gate: &lt;80% Flag</span>
-                            <span class="text-blue-600 dark:text-blue-400 font-bold group-hover:translate-x-1 transition-transform">Inspect →</span>
-                        </div>
                     </div>
 
                     <!-- STAGE 2: Entity Grounding -->
-                    <div id="pipeline-stage-2" class="bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-cyan-400 dark:hover:border-cyan-400 group cursor-pointer shadow-sm flex flex-col justify-between" onclick="selectArchStep(2)">
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-sm flex flex-col justify-between">
                         <div class="space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-2xl">🧭</span>
@@ -431,14 +427,10 @@
                                 Map noisy OCR strings and brand aliases to standard active ingredient names and RxCUIs
                             </p>
                         </div>
-                        <div class="mt-4 pt-2.5 border-t border-slate-200 dark:border-slate-700/50 text-[10px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                            <span>Norm: RxCUI Standard</span>
-                            <span class="text-cyan-600 dark:text-cyan-400 font-bold group-hover:translate-x-1 transition-transform">Inspect →</span>
-                        </div>
                     </div>
 
                     <!-- STAGE 3: Verification Engine -->
-                    <div id="pipeline-stage-3" class="bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-emerald-400 dark:hover:border-emerald-400 group cursor-pointer shadow-sm flex flex-col justify-between" onclick="selectArchStep(3)">
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-emerald-400 dark:hover:border-emerald-400 shadow-sm flex flex-col justify-between">
                         <div class="space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-2xl">🛡️</span>
@@ -455,14 +447,10 @@
                                 Deterministic query of interacting drug pairs without LLM hallucination
                             </p>
                         </div>
-                        <div class="mt-4 pt-2.5 border-t border-slate-200 dark:border-slate-700/50 text-[10px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                            <span>Safety: 0 Hallucination</span>
-                            <span class="text-emerald-600 dark:text-emerald-400 font-bold group-hover:translate-x-1 transition-transform">Inspect →</span>
-                        </div>
                     </div>
 
                     <!-- STAGE 4: Gemma 4 Few-Shot Prompts -->
-                    <div id="pipeline-stage-4" class="bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-purple-400 dark:hover:border-purple-400 group cursor-pointer shadow-sm flex flex-col justify-between" onclick="selectArchStep(4)">
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 p-5 rounded-2xl relative transition-all duration-200 hover:border-purple-400 dark:hover:border-purple-400 shadow-sm flex flex-col justify-between">
                         <div class="space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-2xl">✨</span>
@@ -479,72 +467,6 @@
                                 Context examples showing how to summarize dosages and instructions in plain English
                             </p>
                         </div>
-                        <div class="mt-4 pt-2.5 border-t border-slate-200 dark:border-slate-700/50 text-[10px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                            <span>Model: Gemma 4 Edge</span>
-                            <span class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform">Inspect →</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interactive Scenario Runner (Matching Bottom Photo) -->
-                <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 space-y-4">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-base">🧪</span>
-                                <h5 class="text-sm font-bold text-slate-900 dark:text-white">Select Test Scenario To Run Pipeline</h5>
-                            </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Execute the 4 stages against genuine doctor handwritten prescription words</p>
-                        </div>
-                        <button id="run-pipeline-btn" onclick="executePipelineSimulation()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-xs transition-all shadow-md shadow-blue-500/20 flex items-center gap-2 active:scale-95 whitespace-nowrap">
-                            <span id="pipeline-btn-icon">▶</span>
-                            <span id="pipeline-btn-text">Run 4-Stage Pipeline</span>
-                        </button>
-                    </div>
-
-                    <!-- Scenario Selectors & Live Simulation Result -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-1">
-                        <button onclick="setScenario(1)" id="scenario-btn-1" class="p-3 rounded-xl border text-left transition-all text-xs bg-white dark:bg-slate-900 border-blue-500 shadow-sm ring-1 ring-blue-500/20">
-                            <div class="font-bold text-slate-900 dark:text-white flex items-center justify-between">
-                                <span>Scenario 1</span>
-                                <span class="text-[10px] font-mono text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/20 px-1.5 py-0.5 rounded">Contraindicated</span>
-                            </div>
-                            <div class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Sildenafil 50mg + Nitroglycerin 0.4mg</div>
-                        </button>
-                        <button onclick="setScenario(2)" id="scenario-btn-2" class="p-3 rounded-xl border text-left transition-all text-xs bg-slate-100/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300">
-                            <div class="font-bold text-slate-900 dark:text-white flex items-center justify-between">
-                                <span>Scenario 2</span>
-                                <span class="text-[10px] font-mono text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/20 px-1.5 py-0.5 rounded">&lt;80% Gated</span>
-                            </div>
-                            <div class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Warfarin cursive dosage (Ambiguous)</div>
-                        </button>
-                        <button onclick="setScenario(3)" id="scenario-btn-3" class="p-3 rounded-xl border text-left transition-all text-xs bg-slate-100/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300">
-                            <div class="font-bold text-slate-900 dark:text-white flex items-center justify-between">
-                                <span>Scenario 3</span>
-                                <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/20 px-1.5 py-0.5 rounded">Verified Safe</span>
-                            </div>
-                            <div class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Metformin HCl 500mg PO BID AC</div>
-                        </button>
-                    </div>
-
-                    <!-- Live Pipeline Execution Step Feed -->
-                    <div id="pipeline-live-feed" class="p-3.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-1.5 text-slate-600 dark:text-slate-300">
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold">
-                            <span class="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
-                            <span id="pipeline-feed-status">Pipeline Ready: Click 'Run 4-Stage Pipeline' to simulate execution</span>
-                        </div>
-                        <div id="pipeline-feed-details" class="text-[11px] text-slate-500 dark:text-slate-400">
-                            Input: Dual-medication slip with doctor handwritten sigs. Demonstrates RxHandBD OCR confidence check, RxNorm entity normalization, TWOSIDES deterministic safety lookup, and Gemma 4 few-shot natural schedule synthesis.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Deep Spec Details Box -->
-                <div id="arch-spec-box" class="p-4 rounded-2xl bg-blue-50/70 dark:bg-slate-800/80 border border-blue-200/80 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 flex items-start gap-4 transition-all">
-                    <span class="text-xl">💡</span>
-                    <div>
-                        <strong class="text-slate-900 dark:text-white" id="arch-spec-title">Click any of the 4 Stages above to view dataset & schema specifications</strong>
-                        <p class="text-slate-600 dark:text-slate-400 mt-0.5" id="arch-spec-desc">The pipeline ensures 100% deterministic safety without relying on generative LLM guesses for drug-drug interactions.</p>
                     </div>
                 </div>
             </div>
