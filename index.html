@@ -91,6 +91,19 @@
             position: relative;
         }
 
+        /* Fullscreen styles: hide top header options for distraction-free presentation */
+        :fullscreen #main-header,
+        :-webkit-full-screen #main-header {
+            display: none !important;
+        }
+        :fullscreen #deck-wrapper,
+        :-webkit-full-screen #deck-wrapper {
+            padding-top: 1.5rem !important;
+            padding-bottom: 5rem !important;
+            min-height: 100vh !important;
+            justify-content: center !important;
+        }
+
         /* Print styles */
         @media print {
             .no-print { display: none !important; }
@@ -1036,10 +1049,34 @@
 
         // Fullscreen
         function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                }
             } else {
-                if (document.exitFullscreen) document.exitFullscreen();
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        // Fullscreen state listener to guarantee top header options hide
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+
+        function handleFullscreenChange() {
+            const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
+            const header = document.getElementById('main-header');
+            if (isFull) {
+                header.classList.add('hidden');
+                document.body.classList.add('is-fullscreen');
+            } else {
+                header.classList.remove('hidden');
+                document.body.classList.remove('is-fullscreen');
             }
         }
 
