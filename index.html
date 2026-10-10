@@ -141,10 +141,10 @@
         <div class="hidden md:flex flex-col items-center flex-1 max-w-xs mx-8">
             <div class="flex items-center justify-between w-full text-[11px] font-mono text-slate-500 dark:text-slate-400 mb-1">
                 <span>PROGRESS</span>
-                <span id="header-progress-text" class="text-blue-600 dark:text-blue-400 font-semibold">1 of 6 (16%)</span>
+                <span id="header-progress-text" class="text-blue-600 dark:text-blue-400 font-semibold">1 of 5 (20%)</span>
             </div>
             <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300" style="width: 16.66%;"></div>
+                <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300" style="width: 20%;"></div>
             </div>
         </div>
 
@@ -555,85 +555,8 @@
             </div>
         </section>
 
-        <!-- ==================== SLIDE 5: CLINICAL RIGOR ==================== -->
-        <section id="slide-5" class="slide-container slide-hidden-next w-full" data-slide="5" data-title="Clinical Rigor">
-            <div class="relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-8 md:p-14 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 backdrop-blur-xl space-y-6">
-                <!-- Header -->
-                <div class="flex flex-wrap items-center justify-between gap-4">
-                    <div class="inline-block px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider">
-                        Clinical Rigor & Standards
-                    </div>
-                    <span class="text-xs font-mono text-amber-700 dark:text-amber-400 font-semibold">Pharmacist-in-the-Loop Safeguards</span>
-                </div>
-
-                <div>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Built to Spec & Ready for Clinical Review</h2>
-                    <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">Engineered to conform with real-world pharmacy workflows, auditability, and medical governance.</p>
-                </div>
-
-                <!-- 2-Column Clinical Safeguards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                    <!-- Safeguard 1 -->
-                    <div class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-4 hover:border-amber-300 dark:hover:border-amber-400/60 transition-all shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <span class="text-amber-700 dark:text-amber-400 font-mono text-xs uppercase tracking-wider font-semibold">Uncertainty Flagging</span>
-                            <span class="text-xs px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 font-mono font-medium">Active Guardrail</span>
-                        </div>
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Clinician Escalation Safeguard</h4>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Whenever doctor handwriting has confidence score below threshold (&lt;80%), the system automatically tags <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-900 text-amber-800 dark:text-amber-300 font-mono text-xs">handwriting_uncertain: true</code>.
-                        </p>
-                        <div class="p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/60 space-y-2 text-xs">
-                            <div class="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-medium">
-                                <span>⚠️ Pharmacist Action Required:</span>
-                            </div>
-                            <p class="text-slate-500 dark:text-slate-400 text-[11px]">
-                                Dispense lock is enforced until a certified clinician performs one-click verification with license number and digital sign-off.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Safeguard 2 -->
-                    <div class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-4 hover:border-blue-300 dark:hover:border-blue-400/60 transition-all shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <span class="text-blue-700 dark:text-blue-400 font-mono text-xs uppercase tracking-wider font-semibold">Standardization</span>
-                            <span class="text-xs px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-500/20 text-blue-800 dark:text-blue-300 font-mono font-medium">Interoperable</span>
-                        </div>
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Agent Skill Specification Compliance</h4>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Packaged strictly according to open standardized Agent Skill specifications. Can be dropped into hospital EHR/EMR runtime environments or autonomous medical agent teams.
-                        </p>
-                        <div class="p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/60 space-y-2 text-xs">
-                            <div class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-medium">
-                                <span>📋 Clinical Dossier Export:</span>
-                            </div>
-                            <p class="text-slate-500 dark:text-slate-400 text-[11px]">
-                                Generates cryptographic audit-stamped PDF summaries with masked patient tokens, extracted medications, and contraindication citations.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Simulation Checklist -->
-                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/70 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
-                    <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <span class="text-emerald-600 dark:text-emerald-400 font-bold">✔</span>
-                        <span>Deterministic DDI Engine</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <span class="text-emerald-600 dark:text-emerald-400 font-bold">✔</span>
-                        <span>Zero External API Calls</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <span class="text-emerald-600 dark:text-emerald-400 font-bold">✔</span>
-                        <span>FDA Black Box Citation</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== SLIDE 6: CONCLUSION & Q&A ==================== -->
-        <section id="slide-6" class="slide-container slide-hidden-next w-full" data-slide="6" data-title="Summary & Q&A">
+        <!-- ==================== SLIDE 5: CONCLUSION & Q&A ==================== -->
+        <section id="slide-5" class="slide-container slide-hidden-next w-full" data-slide="5" data-title="Summary & Q&A">
             <div class="relative bg-gradient-to-br from-blue-900 via-slate-900 to-slate-950 text-white border border-slate-800 rounded-3xl p-8 md:p-14 shadow-2xl backdrop-blur-xl text-center space-y-6">
                 <!-- Header badge -->
                 <div class="inline-block px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold uppercase tracking-wider">
@@ -678,7 +601,7 @@
         <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-mono">
             <span id="current-slide-badge" class="font-bold text-blue-600 dark:text-blue-400 text-sm">01</span>
             <span class="text-slate-400 dark:text-slate-500">/</span>
-            <span class="text-slate-600 dark:text-slate-400">06</span>
+            <span class="text-slate-600 dark:text-slate-400">05</span>
         </div>
 
         <!-- Next Button -->
@@ -721,7 +644,7 @@
 
         <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>Press <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white font-mono">N</kbd> to hide</span>
-            <span class="text-blue-600 dark:text-blue-400 font-semibold" id="notes-slide-indicator">Slide 1 of 6</span>
+            <span class="text-blue-600 dark:text-blue-400 font-semibold" id="notes-slide-indicator">Slide 1 of 5</span>
         </div>
     </div>
 
@@ -803,7 +726,7 @@
         // State
         const state = {
             currentSlide: 1,
-            totalSlides: 6,
+            totalSlides: 5,
             isPresentationMode: true,
             isNotesOpen: false,
             isGridOpen: false,
@@ -845,10 +768,9 @@
                     "Stage 1 (OCR Testing): RxHandBD benchmark with 5,578 handwriting images; hard-gates any reading below 80% confidence.",
                     "Stage 2 (Entity Grounding): RxNorm concept table maps noisy OCR strings into standard RxCUIs via local SQLite.",
                     "Stage 3 (Verification Engine): TWOSIDES adverse DDI corpus queried deterministically with ZERO hallucination.",
-                    "Stage 4 (Clinical Synthesis): Gemma 4 few-shot prompts conditioned on n2c2 annotations produce plain-English instructions.",
-                    "Live action: Click 'Run 4-Stage Pipeline' right here to demonstrate sequential execution!"
+                    "Stage 4 (Clinical Synthesis): Gemma 4 few-shot prompts conditioned on n2c2 annotations produce plain-English instructions."
                 ],
-                tip: "Run the interactive pipeline simulator live on this slide — judges will be wowed by the sequential dataflow!"
+                tip: "Judges will appreciate the clear separation of deterministic verification and natural language synthesis."
             },
             4: {
                 title: "Slide 4: Business Model & Monetization",
@@ -863,18 +785,8 @@
                 tip: "Highlight that TPA claim processing drops from 14 days down to 4 minutes."
             },
             5: {
-                title: "Slide 5: Clinical Rigor & Pharmacist Guardrails",
-                timeTarget: "3:45 - 4:30 (45s)",
-                bullets: [
-                    "Explain our Clinician Escalation Safeguard: If handwriting confidence is below 85%, dispensing is hard-locked until pharmacist verification.",
-                    "Agent Skill Specification: Fully compatible with open agent protocols and hospital EHRs.",
-                    "Showcase the cryptographic audit-stamped PDF export with clinician digital signatures."
-                ],
-                tip: "This proves to judges that Kernel Panics thought deeply about clinical governance and liability."
-            },
-            6: {
-                title: "Slide 6: Conclusion & Judge Q&A",
-                timeTarget: "4:30 - 5:00+ (Call to Action)",
+                title: "Slide 5: Conclusion & Judge Q&A",
+                timeTarget: "3:45 - 5:00+ (Call to Action)",
                 bullets: [
                     "Summarize: 'Araksha-Med proves that privacy-first, on-device AI can be clinically rigorous, economically viable, and save lives.'",
                     "Direct attention to the open-source repository at github.com/Nazia012/Araksha.",
