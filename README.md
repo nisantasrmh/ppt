@@ -30,6 +30,11 @@ Araksha-Med is a privacy-first, on-device medical prescription & drug interactio
   - `?`: Shortcuts cheat sheet
 - **Interactive Scenarios**: Live simulation runner on Slide 3 demonstrating sequential pipeline execution.
 
+## 🌐 Live Hosted Link
+
+The presentation is live on GitHub Pages:
+👉 **[https://nisantasrmh.github.io/ppt/](https://nisantasrmh.github.io/ppt/)**
+
 ---
 
 ## 💻 Local Preview
@@ -41,3 +46,4 @@ python -m http.server 8080
 ```
 
 Then visit [http://localhost:8080](http://localhost:8080).
+
