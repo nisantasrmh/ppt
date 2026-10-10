@@ -4,15 +4,15 @@ Interactive, clinical-grade pitch deck presentation for **Araksha-Med** — buil
 
 ## 🚀 Overview
 
-Araksha-Med is a privacy-first, on-device medical prescription & drug interaction inspector combining Google Gemma multimodal vision with a deterministic safety verification engine.
+Araksha-Med is a privacy-first, on-device medical prescription & drug interaction inspector using **RxHandBD OCR testing** for handwriting extraction tolerance, **RxNorm & TWOSIDES** for deterministic drug safety verification, and **Google Gemma 4** to annotate, flag risks, and synthesize plain-English dosage schedules.
 
 ### 🧪 4-Stage Clinical Verification Pipeline:
 `RxHandBD → RxNorm → TWOSIDES → Gemma 4`
 
-1. **Stage 1: OCR Testing** — Benchmarked against RxHandBD (5,578 doctor handwriting images). Automatically gates `<80%` confidence items for pharmacist review.
+1. **Stage 1: OCR Testing** — Benchmarked against RxHandBD (5,578 doctor handwriting images). Extracts prescription text and automatically gates `<80%` confidence items for human pharmacist verification.
 2. **Stage 2: Entity Grounding** — Maps noisy OCR strings to standardized active ingredient names and official RxCUIs using a local RxNorm concept table.
-3. **Stage 3: Verification Engine** — Deterministic query of the TWOSIDES adverse DDI database without LLM hallucination.
-4. **Stage 4: Gemma 4 Few-Shot Prompts** — Synthesizes empathetic, plain-English patient schedules based on n2c2 medication event annotations.
+3. **Stage 3: Verification Engine** — Deterministic query of the TWOSIDES adverse DDI database to verify whether combinations of medications are safe or contraindicated without LLM hallucination.
+4. **Stage 4: Gemma 4 Few-Shot Prompts** — Uses n2c2 medication event annotations to annotate, flag clinical risks, and synthesize plain-English dosage summary instructions.
 
 ---
 

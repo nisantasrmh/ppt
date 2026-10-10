@@ -42,7 +42,7 @@
                     On-Device Medical Prescription & Drug Interaction Inspector
                 </p>
                 <p class="text-slate-600 max-w-2xl text-base md:text-lg leading-relaxed">
-                    Privacy-First Edge AI combining Google Gemma multimodal extraction with a deterministic safety verification engine.
+                    Privacy-First Edge AI using RxHandBD OCR testing for handwriting extraction, RxNorm & TWOSIDES for deterministic safety checks, and Google Gemma 4 to annotate, flag, and summarize dosage instructions.
                 </p>
                 <div class="pt-4 flex flex-wrap gap-4 text-xs font-mono text-slate-600">
                     <span class="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200">Google Gemma Track</span>
@@ -200,7 +200,7 @@
                     <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-2">
                         <div class="text-blue-600 font-mono text-xs uppercase tracking-wider font-semibold">Uncertainty Flagging</div>
                         <h4 class="text-lg font-semibold text-slate-900">Clinician Escalation Safeguard</h4>
-                        <p class="text-sm text-slate-600">Ambiguous handwriting triggers `handwriting_uncertain: true` tags, routing prescriptions directly to qualified pharmacists.</p>
+                        <p class="text-sm text-slate-600">Ambiguous doctor handwriting triggers the &lt;80% confidence safety gate and `handwriting_uncertain: true` tags, routing prescriptions directly to qualified pharmacists.</p>
                     </div>
                     <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-2">
                         <div class="text-blue-600 font-mono text-xs uppercase tracking-wider font-semibold">Open Standard Compliance</div>
@@ -218,7 +218,7 @@
             </div>
             <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Thank You! Open for Questions</h2>
             <p class="text-slate-300 max-w-xl mx-auto text-sm md:text-base leading-relaxed">
-                Araksha-Med demonstrates that lightweight local models can solve real-world healthcare problems without compromising patient confidentiality.
+                Araksha-Med demonstrates that combining RxHandBD OCR testing, deterministic RxNorm & TWOSIDES safety checks, and Gemma 4 plain-language synthesis solves real-world healthcare challenges without hallucinations or privacy leaks.
             </p>
             <div class="pt-2">
                 <a href="https://github.com/Nazia012/Araksha.git" target="_blank" title="Open GitHub Repository" class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-600/30">

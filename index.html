@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Araksha-Med — Team Kernel Panics Pitch Deck</title>
-    <meta name="description" content="Araksha-Med Pitch Deck: Privacy-First On-Device Medical Prescription & Drug Interaction Inspector using Google Gemma and Deterministic Verification.">
+    <meta name="description" content="Araksha-Med Pitch Deck: Privacy-First On-Device Medical Prescription & Drug Interaction Inspector using RxHandBD OCR testing, RxNorm/TWOSIDES deterministic safety, and Google Gemma 4 clinical dosage synthesis.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -240,30 +240,30 @@
 
                     <!-- Description -->
                     <p class="text-slate-600 dark:text-slate-300 max-w-3xl text-base sm:text-lg leading-relaxed">
-                        A clinical-grade, privacy-first edge AI system combining Google Gemma multimodal visual extraction with a deterministic SQLite contraindication engine — guaranteeing zero cloud data leaks and 100% verifiable clinical safety.
+                        A clinical-grade, privacy-first edge AI system using <strong class="text-slate-900 dark:text-white font-semibold">RxHandBD OCR testing</strong> for handwriting tolerance, <strong class="text-slate-900 dark:text-white font-semibold">RxNorm & TWOSIDES</strong> for deterministic drug combination safety verification, and on-device <strong class="text-slate-900 dark:text-white font-semibold">Google Gemma 4</strong> to annotate, flag, and summarize plain-English dosage schedules.
                     </p>
 
                     <!-- Feature Pills / Highlights -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
                         <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/90 dark:border-slate-700/60 p-4 rounded-2xl flex items-center gap-3.5 shadow-sm hover:border-blue-300 transition-colors">
-                            <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg">🔒</div>
+                            <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg">🔬</div>
                             <div>
-                                <div class="text-sm font-bold text-slate-900 dark:text-white">Zero Cloud Exposure</div>
-                                <div class="text-xs text-slate-500 dark:text-slate-400">100% on-device PII masking</div>
-                            </div>
-                        </div>
-                        <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/90 dark:border-slate-700/60 p-4 rounded-2xl flex items-center gap-3.5 shadow-sm hover:border-cyan-300 transition-colors">
-                            <div class="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-lg">⚡</div>
-                            <div>
-                                <div class="text-sm font-bold text-slate-900 dark:text-white">&lt;150ms Edge Latency</div>
-                                <div class="text-xs text-slate-500 dark:text-slate-400">Optimized local quantized Gemma</div>
+                                <div class="text-sm font-bold text-slate-900 dark:text-white">RxHandBD OCR Testing</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Extracts handwriting, gates &lt;80%</div>
                             </div>
                         </div>
                         <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/90 dark:border-slate-700/60 p-4 rounded-2xl flex items-center gap-3.5 shadow-sm hover:border-emerald-300 transition-colors">
                             <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-lg">🛡️</div>
                             <div>
-                                <div class="text-sm font-bold text-slate-900 dark:text-white">Zero Hallucinations</div>
-                                <div class="text-xs text-slate-500 dark:text-slate-400">Deterministic DrugBank rules</div>
+                                <div class="text-sm font-bold text-slate-900 dark:text-white">RxNorm + TWOSIDES</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Deterministic safe/unsafe check</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/90 dark:border-slate-700/60 p-4 rounded-2xl flex items-center gap-3.5 shadow-sm hover:border-purple-300 transition-colors">
+                            <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-lg">✨</div>
+                            <div>
+                                <div class="text-sm font-bold text-slate-900 dark:text-white">Gemma 4 Synthesis</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Annotates &amp; summarizes dosages</div>
                             </div>
                         </div>
                     </div>
@@ -356,9 +356,9 @@
                 <div class="p-4 rounded-2xl bg-blue-50/80 dark:bg-gradient-to-r dark:from-blue-950/60 dark:to-slate-900/80 border border-blue-200 dark:border-blue-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                     <div class="flex items-center gap-3">
                         <div class="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-cyan-400 animate-pulse"></div>
-                        <span class="text-slate-700 dark:text-slate-200 font-medium">The Kernel Panics Thesis: <strong>Never let a generative model guess medication safety.</strong></span>
+                        <span class="text-slate-700 dark:text-slate-200 font-medium">The Kernel Panics Thesis: <strong>Never use generative LLMs for OCR extraction or DDI guesswork.</strong></span>
                     </div>
-                    <span class="text-blue-600 dark:text-blue-400 font-mono font-semibold">Separate visual extraction from deterministic verification →</span>
+                    <span class="text-blue-600 dark:text-blue-400 font-mono font-semibold">RxHandBD OCR + Deterministic Safety + Gemma 4 Synthesis →</span>
                 </div>
             </div>
         </section>
@@ -676,7 +676,7 @@
                         </div>
                         <h4 class="text-lg font-bold text-slate-900 dark:text-white">Clinician Escalation Safeguard</h4>
                         <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Whenever doctor handwriting has confidence score below threshold (&lt;85%), the system automatically tags <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-900 text-amber-800 dark:text-amber-300 font-mono text-xs">handwriting_uncertain: true</code>.
+                            Whenever doctor handwriting has confidence score below threshold (&lt;80%), the system automatically tags <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-900 text-amber-800 dark:text-amber-300 font-mono text-xs">handwriting_uncertain: true</code>.
                         </p>
                         <div class="p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/60 space-y-2 text-xs">
                             <div class="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-medium">
